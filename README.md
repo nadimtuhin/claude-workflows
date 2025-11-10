@@ -314,8 +314,8 @@ See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Related Projects
 
-- **[Claude Token Optimizer](https://github.com/nadimtuhin/claude-token-optimizer)** - Optimize documentation structure (90% token savings)
-- **[Claude Modular](https://github.com/oxygen-fragment/claude-modular)** - Enterprise workflow system (XML-based)
+- **[Claude Token Optimizer](https://github.com/nadimtuhin/claude-token-optimizer)** - Optimize documentation structure (90% token savings). Designed to work together with this repo.
+- **[Claude Modular](https://github.com/oxygen-fragment/claude-modular)** - Enterprise workflow system (XML-based, more complex)
 
 ## License
 
