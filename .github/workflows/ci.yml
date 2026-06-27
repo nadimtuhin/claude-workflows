@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Lint shell scripts
+        run: |
+          sudo apt-get install -y shellcheck
+          shellcheck install.sh
+
+      - name: Check Markdown files
+        uses: DavidAnson/markdownlint-cli2-action@v16
+        with:
+          globs: |
+            README.md
+            CONTRIBUTING.md
+            CODE_OF_CONDUCT.md
+            .claude/commands/**/*.md
+          config: |
+            {
+              "default": true,
+              "MD013": false,
+              "MD033": false,
+              "MD041": false
+            }
+
+  install-smoke-test:
+    name: Install smoke test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create a fake project directory and run install
+        run: |
+          mkdir -p /tmp/test-project
+          cd /tmp/test-project
+          git init
+          bash $GITHUB_WORKSPACE/install.sh
+          test -d .claude/commands/development
+          test -d .claude/commands/testing
+          test -d .claude/commands/git
+          test -d .claude/commands/deployment
+          echo "Install smoke test passed"
