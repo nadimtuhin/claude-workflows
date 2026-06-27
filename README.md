@@ -109,7 +109,7 @@ Starting a new feature that requires...
 
 ## Customize Commands
 
-All commands are just Markdown files. Edit them:
+All commands are Markdown files. Edit them:
 
 ```bash
 # Add your team's workflow
@@ -142,11 +142,11 @@ These repos are designed to work together:
 └── sessions/                   # From Token Optimizer (0 tokens)
 ```
 
-**Result**: Both documentation AND workflows at minimal token cost.
+Both documentation and workflows at minimal token cost.
 
 ## Framework Examples
 
-Commands work with any framework. We provide examples for popular ones:
+Commands work with any framework. Examples are provided for:
 
 - Express.js
 - Next.js
@@ -222,7 +222,7 @@ No. Use what you need:
 Yes. Commands install to `.claude/commands/` subdirectory. Won't conflict.
 
 **XML or Markdown?**
-We use Markdown. Simpler, more readable, easier to edit.
+Markdown. Simpler, more readable, easier to edit.
 
 ## Examples
 
@@ -302,7 +302,7 @@ curl -fsSL https://raw.githubusercontent.com/nadimtuhin/claude-workflows/main/in
 
 ## Contributing
 
-Want to add commands for your framework or workflow?
+To add commands for your framework or workflow:
 
 1. Fork the repo
 2. Add command to appropriate category
@@ -314,7 +314,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Related Projects
 
-- **[Claude Token Optimizer](https://github.com/nadimtuhin/claude-token-optimizer)** - Optimize documentation structure (90% token savings). Designed to work together with this repo.
+- **[Claude Token Optimizer](https://github.com/nadimtuhin/claude-token-optimizer)** - Optimize documentation structure (90% token savings). Designed to work with this repo.
 - **[Claude Modular](https://github.com/oxygen-fragment/claude-modular)** - Enterprise workflow system (XML-based, more complex)
 
 ## License
@@ -323,6 +323,4 @@ MIT - use it however you want.
 
 ---
 
-**Systematic workflows without token waste.**
-
-Install commands once, invoke them forever at minimal cost.
+Systematic workflows without token waste. Install commands once, invoke them at minimal cost.
