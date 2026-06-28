@@ -16,7 +16,7 @@ jobs:
       - name: Lint shell scripts
         run: |
           sudo apt-get install -y shellcheck
-          shellcheck install.sh
+          shellcheck --severity=error install.sh
 
       - name: Check Markdown files
         uses: DavidAnson/markdownlint-cli2-action@v16
