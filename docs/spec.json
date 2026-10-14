@@ -1,0 +1,2 @@
+{ "banners": { "h-start": "GET STARTED", "h-how": "HOW IT WORKS", "h-help": "NEED HELP", "h-dev": "FOR DEVELOPERS" },
+  "hero": { "kicker": "OPEN SOURCE · CLAUDE CODE", "title": "claude-workflows", "tagline": "Your dev process as Markdown files. 0 tokens until you use one." } }

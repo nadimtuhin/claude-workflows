@@ -1,4 +1,85 @@
+<div align="center">
+
 # Claude Workflows
+
+![Claude Workflows: step-by-step workflow commands for Claude Code](https://raw.githubusercontent.com/nadimtuhin/claude-workflows/main/docs/images/hero.svg)
+
+**Claude forgets your process.** You retype the same steps every time.
+
+[`MIT`](LICENSE) [`Markdown`](.claude/commands) [`works with Claude Token Optimizer`](https://github.com/nadimtuhin/claude-token-optimizer)
+
+</div>
+
+<br>
+
+Starting a feature, fixing a bug, writing a commit. You do the same steps each time, and so does everyone on your team, a little differently. This repo puts each process in one Markdown file that Claude follows when you ask.
+
+<br>
+
+![Get started](https://raw.githubusercontent.com/nadimtuhin/claude-workflows/main/docs/images/h-start.svg)
+
+Open a terminal in your project folder and paste each line as is.
+
+**0. Keep a copy of your notes, just in case** (the installer appends to `CLAUDE.md` and `.claudeignore` if you have them):
+
+```bash
+[ -f CLAUDE.md ] && cp CLAUDE.md CLAUDE.md.mine; [ -f .claudeignore ] && cp .claudeignore .claudeignore.mine
+```
+
+**1. Install the commands:**
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/nadimtuhin/claude-workflows/main/install.sh | bash
+```
+
+You get a `.claude/commands/` folder with the workflow files, plus a line in `.claudeignore`. Claude reads a command only when you run it. Want to read the script first? Open [install.sh](install.sh).
+
+**2. Run one in Claude Code.** Claude Code names each command after its file, for example `/commit`, `/start-feature` or `/run-tests`. If it doesn't show up, ask:
+
+```
+Follow .claude/commands/git/commit.md
+```
+
+<br>
+
+![How it works](https://raw.githubusercontent.com/nadimtuhin/claude-workflows/main/docs/images/h-how.svg)
+
+**A command is a Markdown file.** When to use it, what to check first, numbered steps, and how to know you are done.
+
+**It costs nothing until you use it.** Claude reads a command only when you run it, which the repo estimates at about 300 to 500 tokens.
+
+<br>
+
+![Need help](https://raw.githubusercontent.com/nadimtuhin/claude-workflows/main/docs/images/h-help.svg)
+
+<details>
+<summary>Which commands are included?</summary>
+
+Three ship in this repo today: `/start-feature`, `/run-tests` and `/commit`. The longer list under [Available Commands](#available-commands) is the plan. The installer skips files that do not exist yet.
+
+</details>
+
+<details>
+<summary>Will it overwrite my files?</summary>
+
+Yes, some. It replaces `.claude/commands/README.md` and any existing `development/start-feature.md`, `testing/run-tests.md` or `git/commit.md` under `.claude/commands/`. Back those up first. It appends to `.claudeignore` and `CLAUDE.md` if they exist, and creates `.claudeignore` if not.
+
+</details>
+
+<details>
+<summary>How do I undo it?</summary>
+
+Delete `.claude/commands/`. Restore `CLAUDE.md.mine` and `.claudeignore.mine`, or delete `.claudeignore` if you didn't have one.
+
+</details>
+
+<br>
+
+![For developers](https://raw.githubusercontent.com/nadimtuhin/claude-workflows/main/docs/images/h-dev.svg)
+
+Everything below is reference. You don't need it to get started.
+
+[The problem](#the-problem) · [Commands](#available-commands) · [Customize](#customize-commands) · [FAQ](#faq) · [Install options](#installation-options) · [Contributing](#contributing)
 
 Systematic workflow commands for Claude Code. Add structure to your development process without wasting tokens.
 
