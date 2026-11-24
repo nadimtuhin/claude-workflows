@@ -67,32 +67,29 @@ echo -e "${GREEN}📥 Downloading workflow commands...${NC}"
 
 REPO_URL="https://raw.githubusercontent.com/nadimtuhin/claude-workflows/main"
 
-# Development commands
-curl -fsSL "${REPO_URL}/.claude/commands/development/start-feature.md" \
-    -o .claude/commands/development/start-feature.md 2>/dev/null || true
+# Files not published yet 404 and are skipped
+DOWNLOADED=0
+for COMMAND_FILE in \
+    development/start-feature.md \
+    development/fix-bug.md \
+    testing/run-tests.md \
+    testing/write-tests.md \
+    git/commit.md \
+    git/pr.md \
+    deployment/prepare-release.md; do
+    if curl -fsSL "${REPO_URL}/.claude/commands/${COMMAND_FILE}" \
+        -o ".claude/commands/${COMMAND_FILE}" 2>/dev/null; then
+        DOWNLOADED=$((DOWNLOADED + 1))
+    fi
+done
 
-curl -fsSL "${REPO_URL}/.claude/commands/development/fix-bug.md" \
-    -o .claude/commands/development/fix-bug.md 2>/dev/null || true
+if [ "$DOWNLOADED" -eq 0 ]; then
+    echo -e "${RED}❌ Could not download any commands from ${REPO_URL}${NC}"
+    echo "   Check your network connection and try again."
+    exit 1
+fi
 
-# Testing commands
-curl -fsSL "${REPO_URL}/.claude/commands/testing/run-tests.md" \
-    -o .claude/commands/testing/run-tests.md 2>/dev/null || true
-
-curl -fsSL "${REPO_URL}/.claude/commands/testing/write-tests.md" \
-    -o .claude/commands/testing/write-tests.md 2>/dev/null || true
-
-# Git commands
-curl -fsSL "${REPO_URL}/.claude/commands/git/commit.md" \
-    -o .claude/commands/git/commit.md 2>/dev/null || true
-
-curl -fsSL "${REPO_URL}/.claude/commands/git/pr.md" \
-    -o .claude/commands/git/pr.md 2>/dev/null || true
-
-# Deployment commands
-curl -fsSL "${REPO_URL}/.claude/commands/deployment/prepare-release.md" \
-    -o .claude/commands/deployment/prepare-release.md 2>/dev/null || true
-
-echo "   ✓ Downloaded workflow commands"
+echo "   ✓ Downloaded ${DOWNLOADED} workflow commands"
 
 # Create commands README
 cat > .claude/commands/README.md << 'EOF'
@@ -210,9 +207,7 @@ fi
 
 # Framework-specific setup
 if [ -n "$FRAMEWORK" ]; then
-    echo -e "${GREEN}🔧 Setting up ${FRAMEWORK} examples...${NC}"
-    # Download framework-specific commands
-    echo "   ✓ Framework-specific commands added"
+    echo -e "${YELLOW}⚠️  --framework ${FRAMEWORK}: framework-specific commands are not published yet; installed the generic ones${NC}"
 fi
 
 # Summary
