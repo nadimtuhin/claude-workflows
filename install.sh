@@ -98,37 +98,23 @@ echo "   ✓ Downloaded workflow commands"
 cat > .claude/commands/README.md << 'EOF'
 # Workflow Commands
 
-Commands are never auto-loaded (0 tokens). Invoke with slash notation:
+Commands are never auto-loaded (0 tokens). Claude Code names each command
+after its file; the folder only groups them:
 
 ```
-/category:command-name
+/command-name
 ```
 
 ## Available Commands
 
-### Development
-- `/dev:start-feature` - Start new feature with proper setup
-- `/dev:fix-bug` - Bug fix workflow with root cause analysis
-- `/dev:refactor` - Safe refactoring process
-
-### Testing
-- `/test:run` - Execute test suite with coverage
-- `/test:write` - Write tests for existing code
-- `/test:debug` - Debug failing tests
-
-### Git
-- `/git:commit` - Smart commit with conventional format
-- `/git:pr` - Create pull request with description
-- `/git:review` - Code review checklist
-
-### Deployment
-- `/deploy:prepare` - Pre-deployment checklist
-- `/deploy:release` - Release workflow
+- `/start-feature` - Start new feature with proper setup (development/start-feature.md)
+- `/run-tests` - Execute test suite with coverage (testing/run-tests.md)
+- `/commit` - Smart commit with conventional format (git/commit.md)
 
 ## Usage
 
 ```bash
-User: /dev:start-feature user authentication
+User: /start-feature user authentication
 
 Claude:
 1. Loads .claude/commands/development/start-feature.md
@@ -208,12 +194,9 @@ if [ -f "CLAUDE.md" ]; then
 
 Systematic workflows available via slash commands (0 tokens until used):
 
-- `/dev:start-feature` - Start new feature with proper setup
-- `/dev:fix-bug` - Bug fix workflow
-- `/test:run` - Execute test suite
-- `/test:write` - Write tests
-- `/git:commit` - Smart commit workflow
-- `/git:pr` - Create pull request
+- `/start-feature` - Start new feature with proper setup
+- `/run-tests` - Execute test suite
+- `/commit` - Smart commit workflow
 
 See `.claude/commands/README.md` for all commands.
 
@@ -250,20 +233,9 @@ echo "   • After use: Back to 0 tokens"
 echo ""
 echo "📝 Available Commands:"
 echo ""
-echo "   Development:"
-echo "   • /dev:start-feature - Start new feature"
-echo "   • /dev:fix-bug - Fix bug workflow"
-echo ""
-echo "   Testing:"
-echo "   • /test:run - Execute tests"
-echo "   • /test:write - Write tests"
-echo ""
-echo "   Git:"
-echo "   • /git:commit - Smart commit"
-echo "   • /git:pr - Create PR"
-echo ""
-echo "   Deployment:"
-echo "   • /deploy:prepare - Pre-deployment checks"
+echo "   • /start-feature - Start new feature"
+echo "   • /run-tests - Execute tests"
+echo "   • /commit - Smart commit"
 echo ""
 echo "📚 Documentation:"
 echo "   Read: .claude/commands/README.md"
