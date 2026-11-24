@@ -23,8 +23,14 @@ echo ""
 # Check if we're in a project directory
 if [ ! -d ".git" ] && [ ! -f "package.json" ] && [ ! -f "requirements.txt" ] && [ ! -f "Gemfile" ]; then
     echo -e "${YELLOW}⚠️  Warning: This doesn't look like a project root directory${NC}"
-    read -p "Continue anyway? (y/n) " -n 1 -r
-    echo
+    # Under `curl ... | bash` stdin is the script itself, so ask the terminal.
+    REPLY=""
+    if (exec < /dev/tty) 2>/dev/null; then
+        read -p "Continue anyway? (y/n) " -n 1 -r < /dev/tty
+        echo
+    else
+        echo "   No terminal to confirm on. Run this from your project root."
+    fi
     if [[ ! $REPLY =~ ^[Yy]$ ]]; then
         echo -e "${RED}❌ Installation cancelled${NC}"
         exit 1

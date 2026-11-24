@@ -39,3 +39,13 @@ jobs:
           test -d .claude/commands/git
           test -d .claude/commands/deployment
           echo "Install smoke test passed"
+
+      - name: Piped install outside a project asks the terminal, not the script
+        run: |
+          mkdir -p /tmp/not-a-project
+          cd /tmp/not-a-project
+          if out=$(bash < $GITHUB_WORKSPACE/install.sh 2>&1); then
+            echo "expected the install to stop without confirmation"; exit 1
+          fi
+          echo "$out" | grep -q "No terminal to confirm on"
+          test ! -e .claude
