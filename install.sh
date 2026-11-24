@@ -23,8 +23,14 @@ echo ""
 # Check if we're in a project directory
 if [ ! -d ".git" ] && [ ! -f "package.json" ] && [ ! -f "requirements.txt" ] && [ ! -f "Gemfile" ]; then
     echo -e "${YELLOW}⚠️  Warning: This doesn't look like a project root directory${NC}"
-    read -p "Continue anyway? (y/n) " -n 1 -r
-    echo
+    # Under `curl ... | bash` stdin is the script itself, so ask the terminal.
+    REPLY=""
+    if (exec < /dev/tty) 2>/dev/null; then
+        read -p "Continue anyway? (y/n) " -n 1 -r < /dev/tty
+        echo
+    else
+        echo "   No terminal to confirm on. Run this from your project root."
+    fi
     if [[ ! $REPLY =~ ^[Yy]$ ]]; then
         echo -e "${RED}❌ Installation cancelled${NC}"
         exit 1
@@ -61,68 +67,51 @@ echo -e "${GREEN}📥 Downloading workflow commands...${NC}"
 
 REPO_URL="https://raw.githubusercontent.com/nadimtuhin/claude-workflows/main"
 
-# Development commands
-curl -fsSL "${REPO_URL}/.claude/commands/development/start-feature.md" \
-    -o .claude/commands/development/start-feature.md 2>/dev/null || true
+# Files not published yet 404 and are skipped
+DOWNLOADED=0
+for COMMAND_FILE in \
+    development/start-feature.md \
+    development/fix-bug.md \
+    testing/run-tests.md \
+    testing/write-tests.md \
+    git/commit.md \
+    git/pr.md \
+    deployment/prepare-release.md; do
+    if curl -fsSL "${REPO_URL}/.claude/commands/${COMMAND_FILE}" \
+        -o ".claude/commands/${COMMAND_FILE}" 2>/dev/null; then
+        DOWNLOADED=$((DOWNLOADED + 1))
+    fi
+done
 
-curl -fsSL "${REPO_URL}/.claude/commands/development/fix-bug.md" \
-    -o .claude/commands/development/fix-bug.md 2>/dev/null || true
+if [ "$DOWNLOADED" -eq 0 ]; then
+    echo -e "${RED}❌ Could not download any commands from ${REPO_URL}${NC}"
+    echo "   Check your network connection and try again."
+    exit 1
+fi
 
-# Testing commands
-curl -fsSL "${REPO_URL}/.claude/commands/testing/run-tests.md" \
-    -o .claude/commands/testing/run-tests.md 2>/dev/null || true
-
-curl -fsSL "${REPO_URL}/.claude/commands/testing/write-tests.md" \
-    -o .claude/commands/testing/write-tests.md 2>/dev/null || true
-
-# Git commands
-curl -fsSL "${REPO_URL}/.claude/commands/git/commit.md" \
-    -o .claude/commands/git/commit.md 2>/dev/null || true
-
-curl -fsSL "${REPO_URL}/.claude/commands/git/pr.md" \
-    -o .claude/commands/git/pr.md 2>/dev/null || true
-
-# Deployment commands
-curl -fsSL "${REPO_URL}/.claude/commands/deployment/prepare-release.md" \
-    -o .claude/commands/deployment/prepare-release.md 2>/dev/null || true
-
-echo "   ✓ Downloaded workflow commands"
+echo "   ✓ Downloaded ${DOWNLOADED} workflow commands"
 
 # Create commands README
 cat > .claude/commands/README.md << 'EOF'
 # Workflow Commands
 
-Commands are never auto-loaded (0 tokens). Invoke with slash notation:
+Commands are never auto-loaded (0 tokens). Claude Code names each command
+after its file; the folder only groups them:
 
 ```
-/category:command-name
+/command-name
 ```
 
 ## Available Commands
 
-### Development
-- `/dev:start-feature` - Start new feature with proper setup
-- `/dev:fix-bug` - Bug fix workflow with root cause analysis
-- `/dev:refactor` - Safe refactoring process
-
-### Testing
-- `/test:run` - Execute test suite with coverage
-- `/test:write` - Write tests for existing code
-- `/test:debug` - Debug failing tests
-
-### Git
-- `/git:commit` - Smart commit with conventional format
-- `/git:pr` - Create pull request with description
-- `/git:review` - Code review checklist
-
-### Deployment
-- `/deploy:prepare` - Pre-deployment checklist
-- `/deploy:release` - Release workflow
+- `/start-feature` - Start new feature with proper setup (development/start-feature.md)
+- `/run-tests` - Execute test suite with coverage (testing/run-tests.md)
+- `/commit` - Smart commit with conventional format (git/commit.md)
 
 ## Usage
 
 ```bash
-User: /dev:start-feature user authentication
+User: /start-feature user authentication
 
 Claude:
 1. Loads .claude/commands/development/start-feature.md
@@ -202,12 +191,9 @@ if [ -f "CLAUDE.md" ]; then
 
 Systematic workflows available via slash commands (0 tokens until used):
 
-- `/dev:start-feature` - Start new feature with proper setup
-- `/dev:fix-bug` - Bug fix workflow
-- `/test:run` - Execute test suite
-- `/test:write` - Write tests
-- `/git:commit` - Smart commit workflow
-- `/git:pr` - Create pull request
+- `/start-feature` - Start new feature with proper setup
+- `/run-tests` - Execute test suite
+- `/commit` - Smart commit workflow
 
 See `.claude/commands/README.md` for all commands.
 
@@ -221,9 +207,7 @@ fi
 
 # Framework-specific setup
 if [ -n "$FRAMEWORK" ]; then
-    echo -e "${GREEN}🔧 Setting up ${FRAMEWORK} examples...${NC}"
-    # Download framework-specific commands
-    echo "   ✓ Framework-specific commands added"
+    echo -e "${YELLOW}⚠️  --framework ${FRAMEWORK}: framework-specific commands are not published yet; installed the generic ones${NC}"
 fi
 
 # Summary
@@ -244,20 +228,9 @@ echo "   • After use: Back to 0 tokens"
 echo ""
 echo "📝 Available Commands:"
 echo ""
-echo "   Development:"
-echo "   • /dev:start-feature - Start new feature"
-echo "   • /dev:fix-bug - Fix bug workflow"
-echo ""
-echo "   Testing:"
-echo "   • /test:run - Execute tests"
-echo "   • /test:write - Write tests"
-echo ""
-echo "   Git:"
-echo "   • /git:commit - Smart commit"
-echo "   • /git:pr - Create PR"
-echo ""
-echo "   Deployment:"
-echo "   • /deploy:prepare - Pre-deployment checks"
+echo "   • /start-feature - Start new feature"
+echo "   • /run-tests - Execute tests"
+echo "   • /commit - Smart commit"
 echo ""
 echo "📚 Documentation:"
 echo "   Read: .claude/commands/README.md"
